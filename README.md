@@ -1,5 +1,5 @@
 # ParkingLot
-Basic Parking Lot 
+### Basic Parking Lot 
 
 Create a REST service to manage sales for a paid parking lot. Use Java 11+ and any framework or 3rd party libs of your choice (Spring, JavaEE, etc). Use a relational database of your choice (and provide the schema) – i.e MySQL, PostGreSql, H2. Include a Maven or Gradle build for the project.
 
