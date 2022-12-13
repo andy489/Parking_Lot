@@ -14,8 +14,8 @@ Create a REST service to manage sales for a paid parking lot. Use Java 11+ and a
     - Record sales.
 
 ### Optional, for bonus points:
-    - Provide REST method generating an itemized report of sales given a date range;
-    - Protect the REST service using basic authentication;
-    - Provide some unit tests.
+ - Provide REST method generating an itemized report of sales given a date range;
+ - Protect the REST service using basic authentication;
+ - Provide some unit tests.
 
 Deliver project via a GitHub shared repository or a Zip file.
