@@ -1,5 +1,5 @@
 package com.pros.parkinglot.model.slot.type;
 
-public enum SlotType {
+public enum VehicleType {
     CAR, BUS, OTHER
 }

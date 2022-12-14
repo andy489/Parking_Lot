@@ -1,15 +1,11 @@
 package com.pros.parkinglot.model.report;
 
-import com.pros.parkinglot.model.vehicle.Vehicle;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
@@ -28,7 +24,7 @@ public class Report implements Serializable {
     @Column(name = "id")
     private Long reportId;
 
-    @Column
+    @Column(name ="check_out")
     @NotNull
     private LocalDateTime leaveTime;
 
