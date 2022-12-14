@@ -1,10 +1,8 @@
-package com.pros.parkinglot.model.report;
+package com.pros.parkinglot.dto;
 
 import com.pros.parkinglot.model.slot.type.VehicleType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,41 +16,32 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
+
 @Getter
 @ToString
-@Table(name = "reports")
-public class Report implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long reportId;
-
-    @Column(name = "check_in")
-    @NotNull
+public class ReportDTO {
     private LocalDateTime checkIn;
-
-    @Column(name = "check_out")
-    @NotNull
     private LocalDateTime checkOut;
-
-    @Column
     private String registrationNumber;
-
-    @Column(name = "type")
-    @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
+    private BigDecimal price = new BigDecimal("0.0");
 
-    @Column
-    private BigDecimal price;
-
-    public Report() {
+    public ReportDTO() {
     }
 
-    public Report(
+    public ReportDTO(
+            LocalDateTime checkIn,
+            LocalDateTime checkOut,
+            String registrationNumber,
+            VehicleType vehicleType
+    ) {
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.registrationNumber = registrationNumber;
+        this.vehicleType = vehicleType;
+    }
+
+    public ReportDTO(
             LocalDateTime checkIn,
             LocalDateTime checkOut,
             String registrationNumber,

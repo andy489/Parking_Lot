@@ -1,5 +1,6 @@
 package com.pros.parkinglot.controller;
 
+import com.pros.parkinglot.dto.ReportDTO;
 import com.pros.parkinglot.dto.VehicleDTO;
 import com.pros.parkinglot.dto.Ticket;
 import com.pros.parkinglot.model.slot.Vehicle;
@@ -11,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +39,7 @@ public class SlotController {
     }
 
     @GetMapping(value = {"/parking"})
-    public ResponseEntity<List<Vehicle>> getCurrentParkingState(){
+    public ResponseEntity<List<Vehicle>> getCurrentParkingState() {
         return new ResponseEntity<>(slotService.getCurrentParkingState(), HttpStatus.OK);
     }
 
@@ -49,5 +52,11 @@ public class SlotController {
     @PostMapping(value = {"/cars"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Ticket>> parkMultiple(@RequestBody VehicleDTO... vehicleDTOs) {
         return new ResponseEntity<>(slotService.checkIn(vehicleDTOs), HttpStatus.OK);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}")
+    public ResponseEntity<ReportDTO> checkOutVehicle(@PathVariable("id") Integer slotId) {
+        return new ResponseEntity<>(slotService.checkOut(slotId), HttpStatus.OK);
     }
 }

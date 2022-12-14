@@ -1,22 +1,26 @@
 package com.pros.parkinglot.service;
 
+import com.pros.parkinglot.dto.ReportDTO;
 import com.pros.parkinglot.dto.VehicleDTO;
 import com.pros.parkinglot.dto.Ticket;
 import com.pros.parkinglot.exception.DuplicateRegistrationNumberException;
 import com.pros.parkinglot.exception.NoAvailableSlotsException;
+import com.pros.parkinglot.exception.NotAvailableVehicleInTheParkingException;
+import com.pros.parkinglot.mapper.ReportDTOMapper;
 import com.pros.parkinglot.mapper.SlotDtoMapper;
+import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.Vehicle;
 import com.pros.parkinglot.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class SlotService {
@@ -30,15 +34,24 @@ public class SlotService {
     private static Predicate<Vehicle> isTaken = s -> s.getParkedTime() != null;
 
     private VehicleRepository vehicleRepo;
-    private SlotDtoMapper mapper;
+    private ReportService reportService;
+    private SlotDtoMapper slotDtoMapper;
+    private ReportDTOMapper reportDTOMapper;
 
     @Autowired
-    public SlotService(VehicleRepository vehicleRepo, SlotDtoMapper mapper) {
+    public SlotService(
+            VehicleRepository vehicleRepo,
+            ReportService reportService,
+            SlotDtoMapper slotDtoMapper,
+            ReportDTOMapper reportDTOMapper
+    ) {
         this.vehicleRepo = vehicleRepo;
-        this.mapper = mapper;
+        this.reportService = reportService;
+        this.slotDtoMapper = slotDtoMapper;
+        this.reportDTOMapper = reportDTOMapper;
     }
 
-    public List<Vehicle> getCurrentParkingState(){
+    public List<Vehicle> getCurrentParkingState() {
         return getAllSlots().stream().filter(isTaken).collect(Collectors.toList());
     }
 
@@ -65,7 +78,7 @@ public class SlotService {
             throw new DuplicateRegistrationNumberException(String.format("{ \"error\": \"Vehicle with registration number %s is already present in parking lot\" }", vehicleDTO.getRegistrationNumber()));
         }
 
-        return mapper.toTicket(vehicleRepo.save(mapper.toVehicle(vehicleDTO)));
+        return slotDtoMapper.toTicket(vehicleRepo.save(slotDtoMapper.toVehicle(vehicleDTO)));
     }
 
     public List<Ticket> checkIn(VehicleDTO... vehicleDTOs) {
@@ -82,6 +95,31 @@ public class SlotService {
         }
 
         return ticketsToReturn;
+    }
+
+    public ReportDTO checkOut(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Parking slot id must be positive number");
+        }
+
+        Optional<Vehicle> vehicleLeaving = getCurrentParkingState().stream().filter(s -> s.getSlotId().equals(id)).findAny();
+
+        if (vehicleLeaving.isEmpty()) {
+            throw new NotAvailableVehicleInTheParkingException(String.format("There is no vehicle parked in slot with Id=%d.", id));
+        }
+
+        Vehicle vehicleBySlotId = vehicleRepo.getReferenceById(id);
+
+        ReportDTO reportDTO = new ReportDTO(
+                vehicleBySlotId.getParkedTime(),
+                LocalDateTime.now(),
+                vehicleBySlotId.getRegistrationNumber(),
+                vehicleBySlotId.getVehicleType()
+        );
+
+        vehicleBySlotId.resetParkedTime(); /** set the parking slot free! (after we extracted it)*/
+
+        return reportDTOMapper.toReportDTO(reportService.save(reportDTOMapper.toReport(reportDTO)));
     }
 
     private List<Vehicle> getAllSlots() {

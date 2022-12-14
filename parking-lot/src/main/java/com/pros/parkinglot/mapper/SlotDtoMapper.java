@@ -1,12 +1,15 @@
 package com.pros.parkinglot.mapper;
 
+import com.pros.parkinglot.dto.ReportDTO;
 import com.pros.parkinglot.dto.VehicleDTO;
 import com.pros.parkinglot.dto.Ticket;
+import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.Vehicle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeFormatter;
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class SlotDtoMapper {

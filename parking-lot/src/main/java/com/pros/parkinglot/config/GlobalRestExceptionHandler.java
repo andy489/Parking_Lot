@@ -14,23 +14,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NoAvailableSlotsException.class})
-    protected ResponseEntity<Object> handleConflictNoAvailableSlots(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(),
+    protected ResponseEntity<Object> handleConflictNoAvailableSlots(RuntimeException e, WebRequest request) {
+        return handleExceptionInternal(e, e.getMessage(),
                 new HttpHeaders(), HttpStatus.EXPECTATION_FAILED, request);
     }
 
     @ExceptionHandler(value = {DuplicateRegistrationNumberException.class})
-    protected ResponseEntity<Object> handleConflictDuplicateRegistrationNumber(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(),
+    protected ResponseEntity<Object> handleConflictDuplicateRegistrationNumber(RuntimeException e, WebRequest request) {
+        return handleExceptionInternal(e, e.getMessage(),
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
-    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleConflict(RuntimeException e, WebRequest request) {
 
-        String bodyOfResponse = "{ \"error\": \"Something went wrong, we are sorry\" }";
+        String bodyOfResponse = String.format("{ \"error\": \"%s\" }", e.getMessage());
 
-        return handleExceptionInternal(ex, bodyOfResponse,
+        return handleExceptionInternal(e, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

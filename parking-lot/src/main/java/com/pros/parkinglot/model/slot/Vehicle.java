@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,12 +18,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "slots")
+@ToString
+@Table(name = "current_vehicles")
 public class Vehicle implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static String EMPTY_REG_NUM = "";
+    private static final String EMPTY_REG_NUM = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,5 +54,9 @@ public class Vehicle implements Serializable {
         this.vehicleType = vehicleType;
         this.registrationNumber = EMPTY_REG_NUM;
         this.parkedTime = LocalDateTime.now();
+    }
+
+    public void resetParkedTime() {
+        parkedTime = null;
     }
 }
