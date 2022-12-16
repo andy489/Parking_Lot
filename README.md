@@ -1,4 +1,4 @@
-# ParkingLot :parking: :car:
+# ParkingLot :parking:
 
 ### Basic Parking Lot
 
