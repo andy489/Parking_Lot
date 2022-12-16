@@ -23,17 +23,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class ParkingService {
-    @Value("${parking.lot.all.slots}")
-    private int ALL_SLOTS;
     @Value("${parking.lot.car.slots}")
     private int CAR_SLOTS;
     @Value("${parking.lot.bus.slots}")
     private int BUS_SLOTS;
 
-    private VehicleRepository vehicleRepo;
-    private ReportService reportService;
-    private SlotDtoMapper slotDtoMapper;
-    private ReportDtoMapper reportDtoMapper;
+    private final VehicleRepository vehicleRepo;
+    private final ReportService reportService;
+    private final SlotDtoMapper slotDtoMapper;
+    private final ReportDtoMapper reportDtoMapper;
 
     @Autowired
     public ParkingService(
@@ -52,55 +50,76 @@ public class ParkingService {
         return getAllSlots().stream().filter(isTaken()).collect(Collectors.toList());
     }
 
-    public TicketDto checkIn(VehicleDto vehicleDTO) {
-        if (vehicleDTO == null) {
-            throw new IllegalArgumentException("\"error\": \"SlotDTO should not be null\"");
+    public TicketDto checkIn(VehicleDto vehicleDto) {
+        if (vehicleDto == null) {
+            throw new IllegalArgumentException("\"error\": \"SlotDto should not be null\"");
         }
 
         List<Vehicle> allVehicles = getAllSlots();
 
-        Predicate<Vehicle> isSameSlotType = s -> s.getVehicleType().equals(vehicleDTO.getVehicleType());
+        Predicate<Vehicle> isSameSlotType = s -> s.getVehicleType().equals(vehicleDto.getVehicleType());
 
         int takenSlots = (int) allVehicles.stream().filter(isSameSlotType.and(isTaken())).count();
-        int slotsPerType = switch (vehicleDTO.getVehicleType()) {
+        int slotsPerType = switch (vehicleDto.getVehicleType()) {
             case CAR -> CAR_SLOTS;
             case BUS -> BUS_SLOTS;
             case OTHER -> 0;
         };
+
         int availableSlots = slotsPerType - takenSlots;
 
         if (availableSlots <= 0) {
-            throw new NoAvailableSlotsException(String.format("%s parking slots exhausted! We are sorry.", vehicleDTO.getVehicleType()));
+            throw new NoAvailableSlotsException(String.format("%s parking slots exhausted! We are sorry.", vehicleDto.getVehicleType()));
         }
 
-        String regNumIncomingCar = vehicleDTO.getRegistrationNumber();
-        Optional<Vehicle> vehicleWithSameRegNum = allVehicles.stream()
-                .filter(s -> s.getRegistrationNumber().equals(regNumIncomingCar))
-                .findFirst();
+        String regNumIncomingCar = vehicleDto.getRegistrationNumber();
 
-        if (vehicleWithSameRegNum.isPresent()) {
-            Vehicle currVehicleInParkingSlot = vehicleWithSameRegNum.get();
+        if (regNumIncomingCar!= null) {
+            Optional<Vehicle> vehicleWithSameRegNum = allVehicles.stream()
+                    .filter(s -> regNumIncomingCar.equals(s.getRegistrationNumber()))
+                    .findFirst();
 
-            if (currVehicleInParkingSlot.getParkedTime() != null) {
-                throw new DuplicateRegistrationNumberException(String.format("Vehicle with registration number \"%s\" is already present in the parking lot", vehicleDTO.getRegistrationNumber()));
-            } else {
-                Vehicle vehicleSlotIdToModify = vehicleRepo.getReferenceById(currVehicleInParkingSlot.getSlotId());
-                vehicleSlotIdToModify.resetParkedTime();
-                return slotDtoMapper.toTicket(vehicleSlotIdToModify);
+            if (vehicleWithSameRegNum.isPresent()) {
+                Vehicle currVehicleInParkingSlot = vehicleWithSameRegNum.get();
+
+                if (currVehicleInParkingSlot.getCheckIn() != null) {
+                    throw new DuplicateRegistrationNumberException(String.format("Vehicle with registration number \"%s\" is already present in the parking lot", vehicleDto.getRegistrationNumber()));
+                } else {
+                    Vehicle vehicleSlotIdToModify = vehicleRepo.getReferenceById(currVehicleInParkingSlot.getSlotId());
+                    vehicleSlotIdToModify.resetParkedTime();
+                    return slotDtoMapper.toTicket(vehicleSlotIdToModify);
+                }
             }
         }
+        // Label-1:
+        Optional<Vehicle> freeSlotIdToUpdate = allVehicles.stream()
+                .filter(isSameSlotType.and(isTaken().negate()))
+                .findFirst();
 
-        return slotDtoMapper.toTicket(vehicleRepo.save(slotDtoMapper.toVehicle(vehicleDTO)));
+        if (freeSlotIdToUpdate.isEmpty()) {
+            // Leave only the following row after Label-1 for auto increment after every new car [not preferable]
+            return slotDtoMapper.toTicket(vehicleRepo.save(slotDtoMapper.toVehicle(vehicleDto)));
+        }
+
+        Vehicle vehicleToSaveWithSpecifiedId = freeSlotIdToUpdate.get();
+
+        VehicleDto vehicleToSaveDto = new VehicleDto(vehicleDto.getVehicleType(), vehicleDto.getRegistrationNumber());
+
+        Vehicle vehicleToSave = Vehicle.of(vehicleToSaveDto);
+        vehicleToSave.setSlotId(vehicleToSaveWithSpecifiedId.getSlotId());
+        vehicleToSave.resetParkedTime();
+
+        return slotDtoMapper.toTicket(vehicleRepo.save(vehicleToSave));
     }
 
-    public List<TicketDto> checkIn(VehicleDto... vehicleDtos) {
-        if (vehicleDtos == null) {
+    public List<TicketDto> checkIn(VehicleDto... vehicleDtoS) {
+        if (vehicleDtoS == null) {
             throw new IllegalArgumentException("\"error\": \"SlotsDTO should not be null\"");
         }
 
         List<TicketDto> ticketsToReturn = new ArrayList<>();
 
-        for (VehicleDto v : vehicleDtos) {
+        for (VehicleDto v : vehicleDtoS) {
             if (v != null) {
                 ticketsToReturn.add(checkIn(v));
             }
@@ -109,27 +128,27 @@ public class ParkingService {
         return ticketsToReturn;
     }
 
-    public ReportDto checkOut(int id) {
-        if (id <= 0) {
+    public ReportDto checkOut(int slotId) {
+        if (slotId <= 0) {
             throw new IllegalArgumentException("Parking slot id must be positive number");
         }
 
-        Optional<Vehicle> vehicleLeaving = getCurrentParkingState().stream().filter(s -> s.getSlotId().equals(id)).findAny();
+        Optional<Vehicle> vehicleLeaving = getCurrentParkingState().stream().filter(s -> s.getSlotId().equals(slotId)).findAny();
 
         if (vehicleLeaving.isEmpty()) {
-            throw new NotAvailableVehicleInTheParkingException(String.format("There is no vehicle with ID = %d in parking lot.", id));
+            throw new NotAvailableVehicleInTheParkingException(String.format("There is no vehicle with ID = %d in parking lot.", slotId));
         }
 
-        Vehicle vehicleBySlotId = vehicleRepo.getReferenceById(id);
+        Vehicle vehicleBySlotId = vehicleRepo.getReferenceById(slotId);
 
         ReportDto reportDTO = new ReportDto(
-                vehicleBySlotId.getParkedTime(),
+                vehicleBySlotId.getCheckIn(),
                 LocalDateTime.now(),
                 vehicleBySlotId.getRegistrationNumber(),
                 vehicleBySlotId.getVehicleType()
         );
 
-        vehicleBySlotId.nullParkedTime(); /** set the parking slot free! (after we extracted it)*/
+        vehicleBySlotId.nullParkedTime(); // set the parking slot free! (after we extracted it)
 
         return reportDtoMapper.toReportDTO(reportService.save(reportDtoMapper.toReport(reportDTO)));
     }
@@ -139,6 +158,6 @@ public class ParkingService {
     }
 
     private Predicate<Vehicle> isTaken() {
-        return s -> s.getParkedTime() != null;
+        return s -> s.getCheckIn() != null;
     }
 }

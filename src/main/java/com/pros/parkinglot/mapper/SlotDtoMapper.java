@@ -21,7 +21,7 @@ public class SlotDtoMapper {
                 GREETING_MSG,
                 slot.getRegistrationNumber(),
                 slot.getSlotId(),
-                slot.getParkedTime()
+                slot.getCheckIn()
         );
     }
 }

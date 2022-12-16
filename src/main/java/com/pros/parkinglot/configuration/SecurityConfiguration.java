@@ -1,6 +1,6 @@
-package com.pros.parkinglot.config;
+package com.pros.parkinglot.configuration;
 
-import com.pros.parkinglot.config.role.Role;
+import com.pros.parkinglot.configuration.role.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

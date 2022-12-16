@@ -1,4 +1,4 @@
-package com.pros.parkinglot.config.role;
+package com.pros.parkinglot.configuration.role;
 
 public enum Role {
     INTERN,

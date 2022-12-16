@@ -1,4 +1,4 @@
-package com.pros.parkinglot.config;
+package com.pros.parkinglot.configuration;
 
 import com.pros.parkinglot.exception.DuplicateRegistrationNumberException;
 import com.pros.parkinglot.exception.NoAvailableSlotsException;

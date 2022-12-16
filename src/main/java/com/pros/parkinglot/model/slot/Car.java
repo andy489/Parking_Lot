@@ -3,6 +3,8 @@ package com.pros.parkinglot.model.slot;
 import com.pros.parkinglot.model.slot.type.VehicleType;
 import jakarta.persistence.Entity;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Car extends Vehicle {
     public Car() {
@@ -10,7 +12,11 @@ public class Car extends Vehicle {
     }
 
     public Car(String registrationNumber) {
-        super(VehicleType.CAR, registrationNumber);
+        super(registrationNumber);
+    }
+
+    public Car(LocalDateTime checkIn, String registrationNumber) {
+        super(checkIn, VehicleType.CAR, registrationNumber);
     }
 
     @Override

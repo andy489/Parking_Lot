@@ -4,7 +4,6 @@ import com.pros.parkinglot.dto.ReportDto;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.type.VehicleType;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

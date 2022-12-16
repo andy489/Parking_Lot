@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.cfg.NotYetImplementedException;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @ToString
 @Entity
 @Table(name="current_vehicles")
@@ -35,7 +37,7 @@ public abstract class Vehicle implements Serializable {
     private String registrationNumber;
 
     @Column(name = "check_in")
-    private LocalDateTime parkedTime;
+    private LocalDateTime checkIn;
 
     public static Vehicle of(VehicleDto vehicleDTO) {
         return switch (vehicleDTO.getVehicleType()) {
@@ -48,22 +50,22 @@ public abstract class Vehicle implements Serializable {
     public Vehicle() {
     }
 
-    public Vehicle(VehicleType vehicleType, String registrationNumber) {
+    public Vehicle(String registrationNumber) {
         this.registrationNumber = registrationNumber;
-        this.parkedTime = LocalDateTime.now();
+        this.checkIn = LocalDateTime.now();
     }
 
-    public Vehicle(VehicleType vehicleType) {
-        this.registrationNumber = EMPTY_REG_NUM;
-        this.parkedTime = LocalDateTime.now();
+    public Vehicle(LocalDateTime checkIn,  VehicleType vehicleType, String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+        this.checkIn = checkIn;
     }
 
     public void nullParkedTime() {
-        parkedTime = null;
+        checkIn = null;
     }
 
     public void resetParkedTime() {
-        parkedTime = LocalDateTime.now();
+        checkIn = LocalDateTime.now();
     }
 
     public abstract VehicleType getVehicleType();

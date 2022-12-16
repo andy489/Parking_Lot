@@ -3,6 +3,7 @@ package com.pros.parkinglot.dto;
 import com.pros.parkinglot.model.slot.type.VehicleType;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

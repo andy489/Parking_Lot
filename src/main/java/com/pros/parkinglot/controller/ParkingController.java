@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = {"/api"})
+@RequestMapping (value = {"/api"})
 public class ParkingController {
 
     private final ParkingService slotService;
@@ -32,9 +32,10 @@ public class ParkingController {
     public ParkingController(ParkingService slotService) {
         this.slotService = slotService;
     }
-    @GetMapping(value = {"/template"})
-    public Vehicle templateCheat() {
-        return new Car("CВ1234PB");
+
+    @GetMapping(value = {"/template/slot"})
+    public ResponseEntity<Vehicle> templateCheat() {
+        return new ResponseEntity<>(new Car("CВ1234PB"), HttpStatus.OK);
     }
 
 
