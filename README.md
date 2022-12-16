@@ -32,10 +32,10 @@ Deliver project via a GitHub shared repository or a Zip file.
 - Reset payment reports and write current state into CSV file (log files); :heavy_check_mark:
 - Custom request with query parameters. :heavy_check_mark:
 
-NB: Postman collections and DB structure are added in the project repo.
+**NB**: Postman collections and DB structure are added in the project repo.
 
-Project structure:
-
+**Project structure** (MVC):
+```
 src
 ├─ main
 │   └── java
@@ -85,3 +85,4 @@ src
 │           └── application.properties
 └─ test
     └── ...
+```
