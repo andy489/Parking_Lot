@@ -29,5 +29,59 @@ Deliver project via a GitHub shared repository or a Zip file.
 ### Еxtra of my choice:
 
 - Global REST exception hanler; :heavy_check_mark:
-- Reset payment reports and write current state into CSV file; :heavy_check_mark:
-- Custom path variable request. :heavy_check_mark:
+- Reset payment reports and write current state into CSV file (log files); :heavy_check_mark:
+- Custom request with query parameters. :heavy_check_mark:
+
+NB: Postman collections and DB structure are added in the project repo.
+
+Project structure:
+
+src
+├─ main
+│   └── java
+│       ├── com.pros.parkinglot
+│       │   ├── configuration
+│       │   │   ├── role
+│       │   │   │   └── Role
+│       │   │   ├── DataPopulator
+│       │   │   ├── GlobalRestExceptionHandler
+│       │   │   ├── ParkingLotConfiguration
+│       │   │   └── SecurityConfiguration
+│       │   ├── controller
+│       │   │   ├── ParkingController
+│       │   │   └── ReportsController
+│       │   ├── dto        
+│       │   │   ├── ReportDto
+│       │   │   ├── TicketDto
+│       │   │   ├── TimeRange
+│       │   │   └── VehicleDto
+│       │   ├── exception
+│       │   │   ├── DuplicateRegistrationNumberException
+│       │   │   ├── NoAvailableSlotsException
+│       │   │   └── NotAvailableVehicleInTheParkingException
+│       │   ├── mapper
+│       │   │   ├── ReportDtoMapper
+│       │   │   └── SlotDtoMapper
+│       │   ├── model   
+│       │   │   ├── report   
+│       │   │   │   └── Report                                        
+│       │   │   └── slot 
+│       │   │       ├── type       
+│       │   │       │   └── VehicleType
+│       │   │       ├── Bus
+│       │   │       ├── Car
+│       │   │       └── Vehicle
+│       │   ├── repository 
+│       │   │   ├── ReportRepository
+│       │   │   └── VehicleRepository
+│       │   ├── service 
+│       │   │   ├── ParkingService
+│       │   │   └── ReportService
+│       │   └── ParkingLotApplication
+│       └── resources
+│           ├── logs
+│           │   └── ...
+│           ├── ...
+│           └── application.properties
+└─ test
+    └── ...
