@@ -24,4 +24,15 @@ public class Bus extends Vehicle {
     public VehicleType getVehicleType() {
         return VehicleType.BUS;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Vehicle(%d, %s, %s, %s-%s-%s %s:%s)%n",
+                this.getSlotId(),
+                this.getVehicleType(),
+                this.getRegistrationNumber(),
+                this.getCheckIn().getYear(), this.getCheckIn().getDayOfMonth(), this.getCheckIn().getDayOfMonth(),
+                this.getCheckIn().getHour(), this.getCheckIn().getMinute()
+        );
+    }
 }

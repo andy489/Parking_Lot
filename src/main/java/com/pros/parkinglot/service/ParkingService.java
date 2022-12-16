@@ -11,7 +11,7 @@ import com.pros.parkinglot.mapper.SlotDtoMapper;
 import com.pros.parkinglot.model.slot.Vehicle;
 import com.pros.parkinglot.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,10 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ParkingService {
-    @Value("${parking.lot.car.slots}")
-    private int CAR_SLOTS;
-    @Value("${parking.lot.bus.slots}")
-    private int BUS_SLOTS;
+
+    private final int carSlots;
+    private final int busSlots;
 
     private final VehicleRepository vehicleRepo;
     private final ReportService reportService;
@@ -38,31 +37,38 @@ public class ParkingService {
             VehicleRepository vehicleRepo,
             ReportService reportService,
             SlotDtoMapper slotDtoMapper,
-            ReportDtoMapper reportDtoMapper
+            ReportDtoMapper reportDtoMapper,
+            @Qualifier("getCarSlots")
+            int carSlots,
+            @Qualifier("getBusSlots")
+            int busSlots
     ) {
         this.vehicleRepo = vehicleRepo;
         this.reportService = reportService;
         this.slotDtoMapper = slotDtoMapper;
         this.reportDtoMapper = reportDtoMapper;
+
+        this.carSlots=carSlots;
+        this.busSlots=busSlots;
     }
 
     public List<Vehicle> getCurrentParkingState() {
-        return getAllSlots().stream().filter(isTaken()).collect(Collectors.toList());
+        return getAllVehicles().stream().filter(isTaken()).collect(Collectors.toList());
     }
 
-    public TicketDto checkIn(VehicleDto vehicleDto) {
+    public TicketDto checkInSingle(VehicleDto vehicleDto) {
         if (vehicleDto == null) {
             throw new IllegalArgumentException("\"error\": \"SlotDto should not be null\"");
         }
 
-        List<Vehicle> allVehicles = getAllSlots();
+        List<Vehicle> allVehicles = getAllVehicles();
 
         Predicate<Vehicle> isSameSlotType = s -> s.getVehicleType().equals(vehicleDto.getVehicleType());
 
         int takenSlots = (int) allVehicles.stream().filter(isSameSlotType.and(isTaken())).count();
         int slotsPerType = switch (vehicleDto.getVehicleType()) {
-            case CAR -> CAR_SLOTS;
-            case BUS -> BUS_SLOTS;
+            case CAR -> carSlots;
+            case BUS -> busSlots;
             case OTHER -> 0;
         };
 
@@ -74,7 +80,7 @@ public class ParkingService {
 
         String regNumIncomingCar = vehicleDto.getRegistrationNumber();
 
-        if (regNumIncomingCar!= null) {
+        if (regNumIncomingCar != null) {
             Optional<Vehicle> vehicleWithSameRegNum = allVehicles.stream()
                     .filter(s -> regNumIncomingCar.equals(s.getRegistrationNumber()))
                     .findFirst();
@@ -112,7 +118,7 @@ public class ParkingService {
         return slotDtoMapper.toTicket(vehicleRepo.save(vehicleToSave));
     }
 
-    public List<TicketDto> checkIn(VehicleDto... vehicleDtoS) {
+    public List<TicketDto> checkInMultiply(VehicleDto... vehicleDtoS) {
         if (vehicleDtoS == null) {
             throw new IllegalArgumentException("\"error\": \"SlotsDTO should not be null\"");
         }
@@ -121,7 +127,7 @@ public class ParkingService {
 
         for (VehicleDto v : vehicleDtoS) {
             if (v != null) {
-                ticketsToReturn.add(checkIn(v));
+                ticketsToReturn.add(checkInSingle(v));
             }
         }
 
@@ -153,7 +159,7 @@ public class ParkingService {
         return reportDtoMapper.toReportDTO(reportService.save(reportDtoMapper.toReport(reportDTO)));
     }
 
-    private List<Vehicle> getAllSlots() {
+    private List<Vehicle> getAllVehicles() {
         return vehicleRepo.findAll().stream().toList();
     }
 

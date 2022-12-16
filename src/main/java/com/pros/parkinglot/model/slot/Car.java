@@ -23,4 +23,24 @@ public class Car extends Vehicle {
     public VehicleType getVehicleType() {
         return VehicleType.CAR;
     }
+
+    @Override
+    public String toString() {
+        if (getCheckIn() == null) {
+            return String.format("Vehicle(%d, %s, %s, %s)%n",
+                    this.getSlotId(),
+                    this.getVehicleType(),
+                    this.getRegistrationNumber(),
+                    "null"
+            );
+        }
+
+        return String.format("Vehicle(%d, %s, %s, %s-%s-%s %s:%s)%n",
+                this.getSlotId(),
+                this.getVehicleType(),
+                this.getRegistrationNumber(),
+                this.getCheckIn().getYear(), this.getCheckIn().getDayOfMonth(), this.getCheckIn().getDayOfMonth(),
+                this.getCheckIn().getHour(), this.getCheckIn().getMinute()
+        );
+    }
 }

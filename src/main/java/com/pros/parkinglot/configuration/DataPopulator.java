@@ -30,9 +30,16 @@ public class DataPopulator {
         this.mapper = mapper;
     }
 
-    @PostConstruct
-    public void populateData() {
-        Vehicle[] vehicles = new Vehicle[]{
+    // Uncomment to populate DB
+
+//    @PostConstruct
+//    public void populateData() {
+//        vehicleRepo.saveAll(Arrays.asList(getVehicles()));
+//        reportRepo.saveAll(Arrays.asList(getReports()));
+//    }
+
+    public Vehicle[] getVehicles() {
+        return new Vehicle[]{
                 new Car(LocalDateTime.now().minusDays(1).minusHours(2), "BP4494CA"),
                 new Car(LocalDateTime.now().minusDays(1).minusHours(3), "CA3434TA"),
                 new Car(LocalDateTime.now().minusDays(2).minusHours(4), "PB1101BB"),
@@ -64,83 +71,42 @@ public class DataPopulator {
 
                 new Bus(LocalDateTime.now().minusMinutes(45), "CA1723PB"),
                 new Bus(LocalDateTime.now().minusMinutes(35), "BT9993EE"),
-                new Bus(LocalDateTime.now().minusMinutes(52), "CA9888TA"),
+                new Bus(LocalDateTime.now().minusMinutes(52), "CA9888TA")
         };
+    }
 
-        Report[] reports = new Report[]{
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusHours(15),
-                                LocalDateTime.now().minusHours(12).minusMinutes(20),
-                                "A8809AB", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusHours(12),
-                                LocalDateTime.now().minusHours(10),
-                                "CA1949BH", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(1).minusHours(3),
-                                LocalDateTime.now().minusDays(1).minusHours(1),
-                                "CB1120AB", VehicleType.BUS
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(1).minusHours(4),
-                                LocalDateTime.now().minusDays(1).minusHours(2),
-                                "B1319BB", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(3).minusHours(3),
-                                LocalDateTime.now().minusDays(2).minusHours(1),
-                                "CB8701AB", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(2).minusHours(2),
-                                LocalDateTime.now().minusDays(1).minusHours(4),
-                                "CB1345BH", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusHours(8).minusMinutes(18),
-                                LocalDateTime.now().minusHours(2),
-                                "PB3888AB", VehicleType.BUS
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(1).minusHours(1),
-                                LocalDateTime.now().minusHours(6),
-                                "CB3310BB", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(3).minusHours(1),
-                                LocalDateTime.now().minusHours(5),
-                                "BT1101BP", VehicleType.CAR
-                        )
-                ),
-                mapper.toReport(
-                        new ReportDto(
-                                LocalDateTime.now().minusDays(1).minusHours(1),
-                                LocalDateTime.now().minusHours(2),
-                                "E1313BC", VehicleType.BUS
-                        )
-                ),
+    public Report[] getReports() {
+        return new Report[]{
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusHours(15),
+                        LocalDateTime.now().minusHours(12).minusMinutes(20), "A8809AB", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusHours(12),
+                        LocalDateTime.now().minusHours(10), "CA1949BH", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(1).minusHours(3),
+                        LocalDateTime.now().minusDays(1).minusHours(1), "CB1120AB", VehicleType.BUS)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(1).minusHours(4),
+                        LocalDateTime.now().minusDays(1).minusHours(2), "B1319BB", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(3).minusHours(3),
+                        LocalDateTime.now().minusDays(2).minusHours(1), "CB8701AB", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(2).minusHours(2),
+                        LocalDateTime.now().minusDays(1).minusHours(4), "CA1345BH", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusHours(8).minusMinutes(18),
+                        LocalDateTime.now().minusHours(2), "PB3888AB", VehicleType.BUS)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(1).minusHours(1),
+                        LocalDateTime.now().minusHours(6), "CA3310BB", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(3).minusHours(1),
+                        LocalDateTime.now().minusHours(5), "BT1101BP", VehicleType.CAR)),
+                mapper.toReport(new ReportDto(
+                        LocalDateTime.now().minusDays(1).minusHours(1),
+                        LocalDateTime.now().minusHours(2), "E1313BC", VehicleType.BUS))
         };
-
-        vehicleRepo.saveAll(Arrays.asList(vehicles));
-        reportRepo.saveAll(Arrays.asList(reports));
     }
 }

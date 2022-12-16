@@ -3,18 +3,54 @@ package com.pros.parkinglot.mapper;
 import com.pros.parkinglot.dto.ReportDto;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.type.VehicleType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application.properties")
 public class ReportDTOMapperTest {
-    ReportDtoMapper mapper = new ReportDtoMapper();
+
+    @Value("${parking.lot.reports.file.delimiter}")
+    private String commaDelimiter;
+    @Value("${parking.lot.reports.file.date.format}")
+    private String customDateFormat;
+
+    @Value("${parking.lot.price.per.hour.car}")
+    private double pricePerHourCar;
+    @Value("${parking.lot.price.per.day.car}")
+    private double pricePerDayCar;
+
+    @Value("${parking.lot.price.per.hour.bus}")
+    private double pricePerHourBus;
+    @Value("${parking.lot.price.per.day.bus}")
+    private double pricePerDayBus;
+
+    private ReportDtoMapper mapper;
+
+    @BeforeEach
+    public void setUp() {
+        mapper = new ReportDtoMapper(
+                pricePerHourCar,
+                pricePerDayCar,
+                pricePerHourBus,
+                pricePerDayBus,
+                DateTimeFormatter.ofPattern(customDateFormat),
+                commaDelimiter
+        );
+    }
 
     @Test
-    void testCalcPriceCarLessThanAMinute() {
+    public void testCalcPriceCarLessThanAMinute() {
         LocalDateTime in = LocalDateTime.now().minusSeconds(30);
         LocalDateTime out = LocalDateTime.now();
 
@@ -31,7 +67,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceBusLessThanAMinute() {
+    public void testCalcPriceBusLessThanAMinute() {
         LocalDateTime in = LocalDateTime.now().minusSeconds(30);
         LocalDateTime out = LocalDateTime.now();
 
@@ -49,7 +85,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceCarOneAndAHalfHoursStay() {
+    public void testCalcPriceCarOneAndAHalfHoursStay() {
         LocalDateTime in = LocalDateTime.now().minusMinutes(90);
         LocalDateTime out = LocalDateTime.now();
 
@@ -66,7 +102,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceBusOneAndAHalfHoursStay() {
+    public void testCalcPriceBusOneAndAHalfHoursStay() {
         LocalDateTime in = LocalDateTime.now().minusMinutes(90);
         LocalDateTime out = LocalDateTime.now();
 
@@ -83,7 +119,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceCarMoreThanADayStay() {
+    public void testCalcPriceCarMoreThanADayStay() {
         LocalDateTime in = LocalDateTime.now().minusDays(1).minusHours(1).minusMinutes(30);
         LocalDateTime out = LocalDateTime.now();
 
@@ -100,7 +136,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceBusMoreThanADayStay() {
+    public void testCalcPriceBusMoreThanADayStay() {
         LocalDateTime in = LocalDateTime.now().minusDays(1).minusHours(1).minusMinutes(30);
         LocalDateTime out = LocalDateTime.now();
 
@@ -117,7 +153,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceCarMoreThanThreeDaysStay() {
+    public void testCalcPriceCarMoreThanThreeDaysStay() {
         LocalDateTime in = LocalDateTime.now().minusDays(3).minusHours(2).minusMinutes(25);
         LocalDateTime out = LocalDateTime.now();
 
@@ -134,7 +170,7 @@ public class ReportDTOMapperTest {
     }
 
     @Test
-    void testCalcPriceBusMoreThanThreeDaysStay() {
+    public void testCalcPriceBusMoreThanThreeDaysStay() {
         LocalDateTime in = LocalDateTime.now().minusDays(3).minusHours(2).minusMinutes(25);
         LocalDateTime out = LocalDateTime.now();
 

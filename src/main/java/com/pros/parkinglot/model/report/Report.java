@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
 
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -40,7 +39,7 @@ public class Report implements Serializable {
     @NotNull
     private LocalDateTime checkOut;
 
-    @Column
+    @Column(name = "reg_num")
     private String registrationNumber;
 
     @Column(name = "type")
