@@ -1,4 +1,4 @@
-# ParkingLot
+# ParkingLot :parking: :car:
 
 ### Basic Parking Lot
 
@@ -8,20 +8,26 @@ H2. Include a Maven or Gradle build for the project.
 
 ### Business requirements:
 
-- The parking lot has 50 car spots and 10 bus spots;
-- For cars hourly price is EUR 1 while the 24hr price is EUR 10;
-- For buses hourly price is EUR 5 while 24hr price is EUR 40;
-- Sales are generated when a vehicle leaves the parking lot.
+- The parking lot has 50 car spots and 10 bus spots; :heavy_check_mark:
+- For cars hourly price is EUR 1 while the 24hr price is EUR 10; :heavy_check_mark:
+- For buses hourly price is EUR 5 while 24hr price is EUR 40; :heavy_check_mark:
+- Sales are generated when a vehicle leaves the parking lot. :heavy_check_mark:
 
 ### The REST service should have all necessary methods to:
 
-- Record occupancy;
-- Record sales.
+- Record occupancy; :heavy_check_mark:
+- Record sales. :heavy_check_mark:
 
 ### Optional, for bonus points:
 
-- Provide REST method generating an itemized report of sales given a date range;
-- Protect the REST service using basic authentication;
-- Provide some unit tests.
+- Provide REST method generating an itemized report of sales given a date range; :heavy_check_mark:
+- Protect the REST service using basic authentication; :heavy_check_mark:
+- Provide some unit tests. :heavy_check_mark:
 
 Deliver project via a GitHub shared repository or a Zip file.
+
+### Еxtra of my choice:
+
+- Global REST exception hanler; :heavy_check_mark:
+- Reset payment reports and write current state into CSV file; :heavy_check_mark:
+- Custom path variable request. :heavy_check_mark:
