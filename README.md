@@ -34,7 +34,7 @@ Deliver project via a GitHub shared repository or a Zip file.
 
 **NB**: Postman collections and DB structure are added in the project repo.
 
-**Project structure** (MVC):
+**Project structure**:
 ```
 src
 ├─ main
