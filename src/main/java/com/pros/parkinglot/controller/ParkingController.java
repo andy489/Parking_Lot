@@ -47,13 +47,13 @@ public class ParkingController {
     @Transactional
     @PostMapping(value = {"/vehicle"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TicketDto> parkSingle(@RequestBody @Valid VehicleDto vehicleDTO) {
-        return new ResponseEntity<>(slotService.checkInSingle(vehicleDTO), HttpStatus.OK);
+        return new ResponseEntity<>(slotService.checkInSingle(vehicleDTO), HttpStatus.CREATED);
     }
 
     @Transactional
     @PostMapping(value = {"/vehicles"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TicketDto>> parkMultiple(@RequestBody VehicleDto... vehicleDtos) {
-        return new ResponseEntity<>(slotService.checkInMultiply(vehicleDtos), HttpStatus.OK);
+        return new ResponseEntity<>(slotService.checkInMultiply(vehicleDtos), HttpStatus.CREATED);
     }
 
     @Transactional

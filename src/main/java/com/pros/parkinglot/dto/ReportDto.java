@@ -1,48 +1,33 @@
 package com.pros.parkinglot.dto;
 
 import com.pros.parkinglot.model.slot.type.VehicleType;
-import lombok.Getter;
-import lombok.ToString;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Getter
-@ToString
-public class ReportDto {
-    private LocalDateTime checkIn;
-    private LocalDateTime checkOut;
-    private String registrationNumber;
-    private VehicleType vehicleType;
-    private BigDecimal price;
+public record ReportDto(
+        LocalDateTime checkIn,
+        LocalDateTime checkOut,
+        String registrationNumber,
+        VehicleType vehicleType,
+        BigDecimal price) {
 
-    public ReportDto() {
-    }
-
-    public ReportDto(
+    public static ReportDto of(
             LocalDateTime checkIn,
             LocalDateTime checkOut,
             String registrationNumber,
             VehicleType vehicleType
     ) {
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
-        this.registrationNumber = registrationNumber;
-        this.vehicleType = vehicleType;
+        return new ReportDto(checkIn, checkOut, registrationNumber, vehicleType, new BigDecimal(-1));
     }
 
-    public ReportDto(
+    public static ReportDto of(
             LocalDateTime checkIn,
             LocalDateTime checkOut,
             String registrationNumber,
             VehicleType vehicleType,
             BigDecimal price
     ) {
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
-        this.registrationNumber = registrationNumber;
-        this.vehicleType = vehicleType;
-        this.price = price;
+        return new ReportDto(checkIn, checkOut, registrationNumber, vehicleType, price);
     }
 }

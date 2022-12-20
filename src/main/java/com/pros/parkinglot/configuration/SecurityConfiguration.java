@@ -1,6 +1,6 @@
 package com.pros.parkinglot.configuration;
 
-import com.pros.parkinglot.configuration.role.Role;
+import com.pros.parkinglot.configuration.role.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,13 +44,13 @@ public class SecurityConfiguration {
         UserDetails user1 = User.builder()
                 .username(USER1)
                 .password(encoder().encode(PASS1))
-                .roles(Role.DEV.toString(), Role.MANAGER.toString())
+                .roles(UserRole.DEV.toString(), UserRole.MANAGER.toString())
                 .build();
 
         UserDetails user2 = User.builder()
                 .username(USER2)
                 .password(encoder().encode(PASS2))
-                .roles(Role.INTERN.toString())
+                .roles(UserRole.INTERN.toString())
                 .build();
 
         return new InMemoryUserDetailsManager(user1, user2);

@@ -40,9 +40,9 @@ public abstract class Vehicle implements Serializable {
     private LocalDateTime checkIn;
 
     public static Vehicle of(VehicleDto vehicleDTO) {
-        return switch (vehicleDTO.getVehicleType()) {
-            case CAR -> new Car(vehicleDTO.getRegistrationNumber());
-            case BUS -> new Bus(vehicleDTO.getRegistrationNumber());
+        return switch (vehicleDTO.vehicleType()) {
+            case CAR -> new Car(vehicleDTO.registrationNumber());
+            case BUS -> new Bus(vehicleDTO.registrationNumber());
             case OTHER -> throw new NotYetImplementedException("Only CAR and BUS vehicles allowed at this point!");
         };
     }

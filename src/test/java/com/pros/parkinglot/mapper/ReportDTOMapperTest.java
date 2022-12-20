@@ -54,12 +54,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusSeconds(30);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.CAR
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.CAR);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -71,13 +66,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusSeconds(30);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDto = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.BUS
-        );
-
+        ReportDto reportDto = ReportDto.of(in, out, "СА1234СВ", VehicleType.BUS);
 
         Report report = mapper.toReport(reportDto);
 
@@ -89,12 +78,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusMinutes(90);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.CAR
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.CAR);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -106,12 +90,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusMinutes(90);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.BUS
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.BUS);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -123,12 +102,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusDays(1).minusHours(1).minusMinutes(30);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.CAR
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.CAR);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -140,12 +114,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusDays(1).minusHours(1).minusMinutes(30);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.BUS
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.BUS);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -157,12 +126,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusDays(3).minusHours(2).minusMinutes(25);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.CAR
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.CAR);
 
         Report report = mapper.toReport(reportDTO);
 
@@ -174,12 +138,7 @@ public class ReportDTOMapperTest {
         LocalDateTime in = LocalDateTime.now().minusDays(3).minusHours(2).minusMinutes(25);
         LocalDateTime out = LocalDateTime.now();
 
-        ReportDto reportDTO = new ReportDto(
-                in,
-                out,
-                "СА1234СВ",
-                VehicleType.BUS
-        );
+        ReportDto reportDTO = ReportDto.of(in, out, "СА1234СВ", VehicleType.BUS);
 
         Report report = mapper.toReport(reportDTO);
 

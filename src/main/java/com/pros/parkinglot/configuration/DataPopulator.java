@@ -77,34 +77,34 @@ public class DataPopulator {
 
     public Report[] getReports() {
         return new Report[]{
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusHours(15),
                         LocalDateTime.now().minusHours(12).minusMinutes(20), "A8809AB", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusHours(12),
                         LocalDateTime.now().minusHours(10), "CA1949BH", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(1).minusHours(3),
                         LocalDateTime.now().minusDays(1).minusHours(1), "CB1120AB", VehicleType.BUS)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(1).minusHours(4),
                         LocalDateTime.now().minusDays(1).minusHours(2), "B1319BB", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(3).minusHours(3),
                         LocalDateTime.now().minusDays(2).minusHours(1), "CB8701AB", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(2).minusHours(2),
                         LocalDateTime.now().minusDays(1).minusHours(4), "CA1345BH", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusHours(8).minusMinutes(18),
                         LocalDateTime.now().minusHours(2), "PB3888AB", VehicleType.BUS)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(1).minusHours(1),
                         LocalDateTime.now().minusHours(6), "CA3310BB", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(3).minusHours(1),
                         LocalDateTime.now().minusHours(5), "BT1101BP", VehicleType.CAR)),
-                mapper.toReport(new ReportDto(
+                mapper.toReport(ReportDto.of(
                         LocalDateTime.now().minusDays(1).minusHours(1),
                         LocalDateTime.now().minusHours(2), "E1313BC", VehicleType.BUS))
         };

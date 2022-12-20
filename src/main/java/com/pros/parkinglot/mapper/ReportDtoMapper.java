@@ -55,16 +55,16 @@ public class ReportDtoMapper {
     }
 
     public Report toReport(ReportDto reportDTO) {
-        LocalDateTime checkIn = reportDTO.getCheckIn();
-        LocalDateTime checkOut = reportDTO.getCheckOut();
-        VehicleType vehicleType = reportDTO.getVehicleType();
+        LocalDateTime checkIn = reportDTO.checkIn();
+        LocalDateTime checkOut = reportDTO.checkOut();
+        VehicleType vehicleType = reportDTO.vehicleType();
 
         BigDecimal price = calcPrice(ChronoUnit.MINUTES.between(checkIn, checkOut), vehicleType);
 
         return new Report(
                 checkIn,
                 checkOut,
-                reportDTO.getRegistrationNumber(),
+                reportDTO.registrationNumber(),
                 vehicleType,
                 price
         );

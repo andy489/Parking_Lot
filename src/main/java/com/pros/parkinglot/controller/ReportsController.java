@@ -57,7 +57,7 @@ public class ReportsController {
 
     @PostMapping
     public ResponseEntity<List<ReportDto>> getAllReportsInTimeRange(@RequestBody @Valid TimeRange range) {
-        return new ResponseEntity<>(reportService.getAllReportsInTimeRange(range.getCheckIn(), range.getCheckOut()), HttpStatus.OK);
+        return new ResponseEntity<>(reportService.getAllReportsInTimeRange(range.checkIn(), range.checkOut()), HttpStatus.OK);
     }
 
     @GetMapping
@@ -78,7 +78,7 @@ public class ReportsController {
 
         reportService.writeAndClearReports(fileName);
 
-        return new ResponseEntity<>(String.format("{ \"responseMsg\": \"Reports saved to file %s and cleared from DB.\"", fileName), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("{ \"responseMsg\": \"Reports saved to file %s and cleared from DB.\"", fileName), HttpStatus.NO_CONTENT);
     }
 
 }

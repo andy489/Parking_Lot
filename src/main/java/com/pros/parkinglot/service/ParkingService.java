@@ -63,10 +63,10 @@ public class ParkingService {
 
         List<Vehicle> allVehicles = getAllVehicles();
 
-        Predicate<Vehicle> isSameSlotType = s -> s.getVehicleType().equals(vehicleDto.getVehicleType());
+        Predicate<Vehicle> isSameSlotType = s -> s.getVehicleType().equals(vehicleDto.vehicleType());
 
         int takenSlots = (int) allVehicles.stream().filter(isSameSlotType.and(isTaken())).count();
-        int slotsPerType = switch (vehicleDto.getVehicleType()) {
+        int slotsPerType = switch (vehicleDto.vehicleType()) {
             case CAR -> carSlots;
             case BUS -> busSlots;
             case OTHER -> 0;
@@ -75,10 +75,10 @@ public class ParkingService {
         int availableSlots = slotsPerType - takenSlots;
 
         if (availableSlots <= 0) {
-            throw new NoAvailableSlotsException(String.format("%s parking slots exhausted! We are sorry.", vehicleDto.getVehicleType()));
+            throw new NoAvailableSlotsException(String.format("%s parking slots exhausted! We are sorry.", vehicleDto.vehicleType()));
         }
 
-        String regNumIncomingCar = vehicleDto.getRegistrationNumber();
+        String regNumIncomingCar = vehicleDto.registrationNumber();
 
         if (regNumIncomingCar != null) {
             Optional<Vehicle> vehicleWithSameRegNum = allVehicles.stream()
@@ -89,7 +89,7 @@ public class ParkingService {
                 Vehicle currVehicleInParkingSlot = vehicleWithSameRegNum.get();
 
                 if (currVehicleInParkingSlot.getCheckIn() != null) {
-                    throw new DuplicateRegistrationNumberException(String.format("Vehicle with registration number \"%s\" is already present in the parking lot", vehicleDto.getRegistrationNumber()));
+                    throw new DuplicateRegistrationNumberException(String.format("Vehicle with registration number \"%s\" is already present in the parking lot", vehicleDto.registrationNumber()));
                 } else {
                     Vehicle vehicleSlotIdToModify = vehicleRepo.getReferenceById(currVehicleInParkingSlot.getSlotId());
                     vehicleSlotIdToModify.resetParkedTime();
@@ -109,7 +109,7 @@ public class ParkingService {
 
         Vehicle vehicleToSaveWithSpecifiedId = freeSlotIdToUpdate.get();
 
-        VehicleDto vehicleToSaveDto = new VehicleDto(vehicleDto.getVehicleType(), vehicleDto.getRegistrationNumber());
+        VehicleDto vehicleToSaveDto = new VehicleDto(vehicleDto.vehicleType(), vehicleDto.registrationNumber());
 
         Vehicle vehicleToSave = Vehicle.of(vehicleToSaveDto);
         vehicleToSave.setSlotId(vehicleToSaveWithSpecifiedId.getSlotId());
@@ -147,7 +147,7 @@ public class ParkingService {
 
         Vehicle vehicleBySlotId = vehicleRepo.getReferenceById(slotId);
 
-        ReportDto reportDTO = new ReportDto(
+        ReportDto reportDTO = ReportDto.of(
                 vehicleBySlotId.getCheckIn(),
                 LocalDateTime.now(),
                 vehicleBySlotId.getRegistrationNumber(),
