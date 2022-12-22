@@ -9,41 +9,6 @@
 			"name": "ParkingController",
 			"item": [
 				{
-					"name": "CheckOut",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "pass",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/5",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "TemplateSlot",
 					"request": {
 						"auth": {
@@ -136,7 +101,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"regNum\":   \"B4550AE\",\n    \"vehicleType\": \"BUS\"\n}",
+							"raw": "{\n    \"regNum\":   \"B1150AE\",\n    \"vehicleType\": \"CAR\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -180,7 +145,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[\n    {\n        \"vehicleType\": \"CAR\",\n        \"regNum\": \"СВ1234ТК\"\n    },\n    {       \n        \"vehicleType\": \"BUS\",\n        \"regNum\": \"ВР2222СА\"\n    }\n]",
+							"raw": "[\n    {\n        \"vehicleType\": \"CAR\",\n        \"regNum\": \"A9244ТК\"\n    },\n    {       \n        \"vehicleType\": \"BUS\",\n        \"regNum\": \"CA265СА\"\n    }\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -197,6 +162,41 @@
 							"path": [
 								"api",
 								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckOut",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"6"
 							]
 						}
 					},
@@ -332,19 +332,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/reports?from=BT",
+							"raw": "http://localhost:8080/reports/with?prefix=CB,CA",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"reports"
+								"reports",
+								"with"
 							],
 							"query": [
 								{
-									"key": "from",
-									"value": "BT"
+									"key": "prefix",
+									"value": "CB,CA"
 								}
 							]
 						}

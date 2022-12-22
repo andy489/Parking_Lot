@@ -1,4 +1,4 @@
-package com.pros.parkinglot.configuration.mapper;
+package com.pros.parkinglot.mapper;
 
 import com.pros.parkinglot.dto.VehicleDto;
 import com.pros.parkinglot.dto.TicketDto;

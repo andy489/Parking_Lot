@@ -1,7 +1,7 @@
 package com.pros.parkinglot.service;
 
 import com.pros.parkinglot.dto.ReportDto;
-import com.pros.parkinglot.configuration.mapper.ReportDtoMapper;
+import com.pros.parkinglot.mapper.ReportDtoMapper;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.repository.ReportRepository;
 import com.pros.parkinglot.util.CSVFormatter;

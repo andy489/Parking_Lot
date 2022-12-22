@@ -1,7 +1,7 @@
 package com.pros.parkinglot.configuration;
 
 import com.pros.parkinglot.dto.ReportDto;
-import com.pros.parkinglot.configuration.mapper.ReportDtoMapper;
+import com.pros.parkinglot.mapper.ReportDtoMapper;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.Bus;
 import com.pros.parkinglot.model.slot.Car;
