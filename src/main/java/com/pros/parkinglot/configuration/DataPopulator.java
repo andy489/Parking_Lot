@@ -1,7 +1,7 @@
 package com.pros.parkinglot.configuration;
 
 import com.pros.parkinglot.dto.ReportDto;
-import com.pros.parkinglot.mapper.ReportDtoMapper;
+import com.pros.parkinglot.configuration.mapper.ReportDtoMapper;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.model.slot.Bus;
 import com.pros.parkinglot.model.slot.Car;
@@ -9,12 +9,10 @@ import com.pros.parkinglot.model.slot.Vehicle;
 import com.pros.parkinglot.model.slot.type.VehicleType;
 import com.pros.parkinglot.repository.ReportRepository;
 import com.pros.parkinglot.repository.VehicleRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @Component
 public class DataPopulator {

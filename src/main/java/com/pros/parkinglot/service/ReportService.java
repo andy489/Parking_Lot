@@ -1,9 +1,10 @@
 package com.pros.parkinglot.service;
 
 import com.pros.parkinglot.dto.ReportDto;
-import com.pros.parkinglot.mapper.ReportDtoMapper;
+import com.pros.parkinglot.configuration.mapper.ReportDtoMapper;
 import com.pros.parkinglot.model.report.Report;
 import com.pros.parkinglot.repository.ReportRepository;
+import com.pros.parkinglot.util.CSVFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class ReportService {
 
     private final ReportRepository reportRepo;
     private final ReportDtoMapper mapper;
+    private final CSVFormatter csvFormatter;
 
     @Autowired
-    public ReportService(ReportRepository reportRepo, ReportDtoMapper mapper) {
+    public ReportService(ReportRepository reportRepo, ReportDtoMapper mapper, CSVFormatter csvFormatter) {
         this.reportRepo = reportRepo;
         this.mapper = mapper;
+        this.csvFormatter = csvFormatter;
     }
 
     public Report save(Report report) {
@@ -45,15 +48,20 @@ public class ReportService {
     }
 
     public List<ReportDto> getAllReportsWithRegistrationNumberWithStartingPrefix(List<String> regPrefixes) {
-        if (regPrefixes == null || regPrefixes.isEmpty()) {
+        if (regPrefixes == null || regPrefixes.size() == 0) {
             return reportRepo.findAll().stream().map(mapper::toReportDTO).toList();
         }
 
-        return reportRepo.findAll()
-                .stream()
-                .filter(r -> startsWithAnyOf(r.getRegistrationNumber(), regPrefixes))
-                .map(mapper::toReportDTO)
+        List<Report> reports = reportRepo.findAll()
+                .stream().toList();
+
+        reports = reports.stream()
+                .filter(r -> startsWithAnyOf(r.getRegistrationNumber(), regPrefixes)).toList();
+
+        List<ReportDto> reportDtoS = reports.stream().map(mapper::toReportDTO)
                 .toList();
+
+        return reportDtoS;
     }
 
     public void writeAndClearReports(String fileName) {
@@ -71,10 +79,10 @@ public class ReportService {
         try (var bw = Files.newBufferedWriter(filePath)) {
             List<Report> reports = reportRepo.findAll().stream().toList();
 
-            bw.write(getHeader()+System.lineSeparator());
+            bw.write(getHeader() + System.lineSeparator());
 
             for (Report r : reports) {
-                bw.write(mapper.toCsvString(r));
+                bw.write(csvFormatter.toCsvString(r));
             }
 
             bw.flush();
@@ -86,17 +94,17 @@ public class ReportService {
     }
 
     private boolean startsWithAnyOf(String regNum, List<String> prefixes) {
-        prefixes = prefixes.stream().filter(p -> p != null && !p.isEmpty() && !p.isBlank()).toList();
+        List<String> prefixesAsList = prefixes.stream().filter(p -> p != null && !p.isEmpty() && !p.isBlank()).toList();
 
         if (regNum == null || regNum.isEmpty()) return false;
 
-        for (String p : prefixes) {
-            if (!regNum.startsWith(p)) {
-                return false;
+        for (String p : prefixesAsList) {
+            if (regNum.startsWith(p)) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     private String getHeader() {

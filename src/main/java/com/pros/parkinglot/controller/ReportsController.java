@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,11 +62,19 @@ public class ReportsController {
     }
 
     @GetMapping
+    public ResponseEntity<List<ReportDto>> getAllReports() {
+        return new ResponseEntity<>(
+                reportService.getAllReportsWithRegistrationNumberWithStartingPrefix(List.of()),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/with")
     public ResponseEntity<List<ReportDto>> getAllReportsWithRegistrationNumberWithStartingPrefix(
-            @RequestParam(required = false) List<String> from
+            @RequestParam(value = "prefix") List<String> prefix
     ) {
         return new ResponseEntity<>(
-                reportService.getAllReportsWithRegistrationNumberWithStartingPrefix(from),
+                reportService.getAllReportsWithRegistrationNumberWithStartingPrefix(prefix),
                 HttpStatus.OK
         );
     }
