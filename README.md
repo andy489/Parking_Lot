@@ -32,6 +32,7 @@ Deliver project via a GitHub shared repository or a Zip file.
 - Reset payment reports and write current state into CSV file (log files); :heavy_check_mark:
 - Custom request with request parameters for searchig cars with specified prefixes of their registration number. :heavy_check_mark:
   - Example: "http://localhost:8080/reports/with?prefix=CB,CA" will return all vehicles registered in Sofia who used the parking lot.
+  
 **NB**: Postman collections and DB structure are added in the project repo.
 
 **Project structure**:
