@@ -30,8 +30,8 @@ Deliver project via a GitHub shared repository or a Zip file.
 
 - Global REST exception hanler; :heavy_check_mark:
 - Reset payment reports and write current state into CSV file (log files); :heavy_check_mark:
-- Custom request with query parameters. :heavy_check_mark:
-
+- Custom request with request parameters for searchig cars with specified prefixes of their registration number. :heavy_check_mark:
+  - Example: "http://localhost:8080/reports/with?prefix=CB,CA" will return all vehicles registered in Sofia who used the parking lot.
 **NB**: Postman collections and DB structure are added in the project repo.
 
 **Project structure**:
@@ -42,7 +42,7 @@ src
 │       ├── com.pros.parkinglot
 │       │   ├── configuration
 │       │   │   ├── role
-│       │   │   │   └── Role
+│       │   │   │   └── UserRole
 │       │   │   ├── DataPopulator
 │       │   │   ├── GlobalRestExceptionHandler
 │       │   │   ├── ParkingLotConfiguration
@@ -77,12 +77,21 @@ src
 │       │   ├── service 
 │       │   │   ├── ParkingService
 │       │   │   └── ReportService
+│       │   ├── util 
+│       │   │   ├── CSVFormatter
+│       │   │   └── PriceCalculator
 │       │   └── ParkingLotApplication
 │       └── resources
 │           ├── logs
 │           │   └── ...
 │           ├── ...
-│           └── application.properties
-└─ test
-    └── ...
+│           ├── application.properties
+│           └── application-dev.properties
+└── test
+    └── java
+        └── com.pros.parkinglot
+            ├── service 
+            │   └── ParkingServiceTest
+            └── util 
+               └── PriceCalculatorTest
 ```
